@@ -112,7 +112,7 @@ streamlit run frontend/app.py
 
 | **Dashboard** | **Interactive Analytics** |
 |:---:|:---:|
-| *(Placeholders for demo)* | *(Placeholders for demo)* |
+| ![Dashboard](docs/images/dashboard.png) | ![Analytics](docs/images/analytics.png) |
 
 ---
 

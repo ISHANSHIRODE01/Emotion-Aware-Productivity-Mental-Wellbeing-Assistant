@@ -53,24 +53,24 @@ The system follows a modern, decoupled **Client-Server** architecture.
 
 ```mermaid
 graph LR
-    User[User] -->|Interacts| Frontend(Streamlit UI);
-    Frontend -->|POST Multi-Part Data| Backend{FastAPI Server};
+    User[User] -->|Interacts| Frontend("Streamlit UI")
+    Frontend -->|POST Multi-Part Data| Backend{"FastAPI Server"}
     
     subgraph "AI Core Services"
-        Backend -->|Journal| NLP[Text Model (RoBERTa)];
-        Backend -->|Audio File| Audio[Voice Model (Wav2Vec2)];
-        Backend -->|Frame| Vision[Video Model (FER)];
+        Backend -->|Journal| NLP["Text Model (RoBERTa)"]
+        Backend -->|Audio File| Audio["Voice Model (Wav2Vec2)"]
+        Backend -->|Frame| Vision["Video Model (FER)"]
     end
     
-    NLP --> Fusion[Fusion Engine];
-    Audio --> Fusion;
-    Vision --> Fusion;
+    NLP --> Fusion["Fusion Engine"]
+    Audio --> Fusion
+    Vision --> Fusion
     
-    Fusion -->|Probabilities| Scoring[Wellbeing Calculator];
-    Scoring -->|Score + Emotion| Recommender[Recommendation Engine];
+    Fusion -->|Probabilities| Scoring["Wellbeing Calculator"]
+    Scoring -->|Score + Emotion| Recommender["Recommendation Engine"]
     
-    Recommender --> DB[(SQLite Database)];
-    Recommender -->|JSON Response| Frontend;
+    Recommender --> DB[("SQLite Database")]
+    Recommender -->|JSON Response| Frontend
 ```
 
 ### Tech Stack

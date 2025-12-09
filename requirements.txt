@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+streamlit
+torch
+transformers
+scikit-learn
+opencv-python
+librosa
+numpy
+pandas
+matplotlib
+fer
+tensorflow
+python-multipart
+requests
+soundfile
+plotly

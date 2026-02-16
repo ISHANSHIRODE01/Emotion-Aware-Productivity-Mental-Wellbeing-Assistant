@@ -135,6 +135,34 @@ python test_verify.py
 
 ---
 
+## ⚠️ Deployment Limitations
+
+**This application is designed for local development only and cannot be deployed on free-tier cloud platforms.**
+
+### Why?
+The backend uses heavy AI models (PyTorch, Transformers, Wav2Vec2) that require:
+- **Memory**: ~800MB-1.2GB RAM at runtime
+- **Storage**: ~2GB for model weights
+- **CPU**: Multi-core processing for real-time inference
+
+### Free Tier Constraints:
+- **Vercel**: 250MB serverless function limit (Backend exceeds this)
+- **Render Free**: 512MB RAM limit (Backend requires ~1GB)
+- **Railway Free**: 512MB RAM + 500MB swap (Still insufficient)
+- **Heroku Free**: Discontinued
+
+### Deployment Options:
+1. **Local Development** (Recommended): Run on your own machine with `uvicorn` + `npm run dev`
+2. **Paid Cloud Hosting**: 
+   - Render Starter ($7/month, 2GB RAM)
+   - Railway Pro ($5/month, 8GB RAM)
+   - AWS EC2 t3.small (~$15/month)
+3. **Self-Hosted**: Deploy on your own VPS/server with Docker
+
+**For production deployment instructions, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)**
+
+---
+
 ## 🎯 Usage
 
 ### Starting the Application

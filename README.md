@@ -2,12 +2,14 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Live_Prototype-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Stack](https://img.shields.io/badge/Full_Stack-FastAPI%20%2B%20Streamlit-00C7B7?style=for-the-badge)
+![Stack](https://img.shields.io/badge/Full_Stack-FastAPI%2BReact-00C7B7?style=for-the-badge&logo=react&logoColor=white)
 ![AI](https://img.shields.io/badge/AI-Transformers%20%2B%20Computer_Vision-FF4B4B?style=for-the-badge)
 
 *An empathetic AI companion that fuses text, voice, and facial expressions to optimize your mental health and productivity.*
+
+[Features](#-key-features) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture) • [API](#-api-reference)
 
 </div>
 
@@ -27,7 +29,7 @@ The **Emotion-Aware Productivity Assistant** is not just another to-do list. It 
 Unlike simple sentiment analysis tools, this system combines three distinct AI streams for 95%+ emotional accuracy:
 - **Text Analysis**: Uses **DistilRoBERTa** (HuggingFace) to detect subtle nuances in your journals.
 - **Voice Intelligence**: Powered by **Wav2Vec2** Transformers to analyze vocal tonality (pitch, jitter, energy).
-- **Facial Recognition**: Uses **Deep Neural Networks (FER)** to detect micro-expressions (happy, sad, stressed) via webcam.
+- **Facial Recognition**: Uses **Deep Neural Networks (FER)** to detect micro-expressions (happy, sad, stressed) via webcam or uploaded photos.
 
 ### 2. 📊 Premium Analytics Dashboard
 - **Glassmorphism UI**: A stunning, modern dark-mode interface built with custom CSS.
@@ -45,6 +47,11 @@ The recommendation engine doesn't just say "take a break." It adapts to your sco
 - Built-in **SQLite** database stores every session securely.
 - Analyze your long-term trends to identify what days or times trigger stress.
 
+### 5. 🧪 Testing Labs
+- Sample text prompts for quick testing
+- Audio sample links for voice emotion testing
+- Photo upload capability for facial expression analysis
+
 ---
 
 ## 🏗 Technical Architecture
@@ -53,7 +60,7 @@ The system follows a modern, decoupled **Client-Server** architecture.
 
 ```mermaid
 graph LR
-    User[User] -->|Interacts| Frontend("Streamlit UI")
+    User[User] -->|Interacts| Frontend("React UI")
     Frontend -->|POST Multi-Part Data| Backend{"FastAPI Server"}
     
     subgraph "AI Core Services"
@@ -74,45 +81,231 @@ graph LR
 ```
 
 ### Tech Stack
-- **Frontend**: Streamlit, Plotly, Custom CSS/HTML.
+- **Frontend**: React 18, Vite, Framer Motion, Recharts.
 - **Backend**: FastAPI, Pydantic (Type Safety), Uvicorn.
 - **ML/AI**: PyTorch, Transformers (HuggingFace), Librosa, OpenCV, TensorFlow.
 - **Database**: SQLite3.
+- **Audio Processing**: FFmpeg (required for audio emotion analysis).
 
 ---
 
-## 🚀 How to Run
+## 🚀 Installation
 
 ### Prerequisites
-- Python 3.8 or higher.
-- A working webcam and microphone (optional, but recommended).
+- **Python 3.9 or higher**
+- **FFmpeg** (for audio processing)
+- A working webcam and microphone (optional, but recommended)
 
-### 1. Install Dependencies
+### Step 1: Clone the Repository
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/ISHANSHIRODE01/Emotion-Aware-Productivity-Mental-Wellbeing-Assistant.git
+cd Emotion-Aware-Productivity-Mental-Wellbeing-Assistant
 ```
 
-### 2. Start the Backend Server
+### Step 2: Install Dependencies
+```bash
+pip install -r requirements.txt
+cd frontend-react
+npm install
+cd ..
+```
+
+### Step 3: Install FFmpeg
+
+#### Windows (using winget):
+```powershell
+winget install -e --id Gyan.FFmpeg
+```
+
+#### macOS (using Homebrew):
+```bash
+brew install ffmpeg
+```
+
+#### Linux (Ubuntu/Debian):
+```bash
+sudo apt update
+sudo apt install ffmpeg
+```
+
+### Step 4: Verify Installation
+```bash
+python test_verify.py
+```
+
+---
+
+## 🎯 Usage
+
+### Starting the Application
+
+#### 1. Start the Backend Server
 This handles all the heavy AI processing.
 ```bash
-uvicorn backend.api:app --reload
+uvicorn backend.api:app --port 8000
 ```
 *Wait for the "All models loaded successfully" message.*
 
-### 3. Launch the Frontend Dashboard
-In a customizable new terminal:
+#### 2. Start the React Frontend
+
 ```bash
-streamlit run frontend/app.py
+cd frontend-react
+npm run dev
 ```
-*The app will automatically open in your browser at `http://localhost:8501`.*
+*Access the dashboard at `http://localhost:5173`*
+
+**Features:**
+- ✨ Smooth animations with Framer Motion
+- 🌓 Light/Dark mode toggle
+- 📊 Interactive Recharts visualizations
+- 📱 Fully responsive design
+- ⚡ Lightning-fast Vite HMR
+
+### Using the Dashboard
+
+1. **Enter Your Name**: Customize your experience in the sidebar.
+2. **Choose Your Mode**: Work, Study, Chill, or Meeting.
+3. **Input Your State**:
+   - Write in the journal
+   - Record or upload audio
+   - Take a photo or upload one
+4. **Analyze**: Click "Analyze My State" to get your wellbeing report.
+5. **Review History**: Track your emotional trends over time.
+
+### Testing Labs
+
+Navigate to the "Testing Labs" tab to:
+- Copy sample text prompts
+- Access sample audio files
+- Get tips for photo uploads
 
 ---
 
-## 📸 Screenshots
+## 📡 API Reference
 
-| **Dashboard** | **Interactive Analytics** |
-|:---:|:---:|
-| ![Dashboard](docs/images/dashboard.png) | ![Analytics](docs/images/analytics.png) |
+### Base URL
+```
+http://127.0.0.1:8000
+```
+
+### Endpoints
+
+#### GET `/`
+Health check endpoint.
+
+**Response:**
+```json
+{
+  "message": "Emotion-Wellbeing Assistant Backend is running"
+}
+```
+
+#### POST `/analyze_session`
+Analyze user's emotional state using multi-modal inputs.
+
+**Request (multipart/form-data):**
+- `user_id` (string): User identifier
+- `text` (string, optional): Journal entry
+- `audio_file` (file, optional): Audio recording (.wav, .mp3)
+- `image_file` (file, optional): Face photo (.jpg, .jpeg, .png)
+
+**Response:**
+```json
+{
+  "user_id": "Alex",
+  "wellbeing_score": 53.0,
+  "dominant_emotion": "surprise",
+  "recommendation": "I sense some surprise. Playing some lofi beats...",
+  "fused_emotions": {
+    "happy": 0.15,
+    "sad": 0.10,
+    "angry": 0.05,
+    "fear": 0.20,
+    "disgust": 0.05,
+    "surprise": 0.35,
+    "neutral": 0.10
+  },
+  "text_analysis": {...},
+  "audio_analysis": {...},
+  "face_analysis": {...},
+  "processing_time_ms": 61.66
+}
+```
+
+#### GET `/history`
+Retrieve user's session history.
+
+**Query Parameters:**
+- `user_id` (string): User identifier
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "user_id": "Alex",
+    "timestamp": "2026-02-16T10:30:00",
+    "wellbeing_score": 53.0,
+    "dominant_emotion": "surprise",
+    "recommendation": "..."
+  }
+]
+```
+
+---
+
+## 🧪 Testing
+
+### Integration Tests
+```bash
+python test_verify.py
+```
+
+### Model-Specific Tests
+```bash
+# Test text emotion model
+python test_text_only.py
+
+# Test with specific labels
+python test_text_labels.py
+```
+
+---
+
+## 📁 Project Structure
+
+```
+Emotion-Aware-Productivity-Mental-Wellbeing-Assistant/
+├── backend/
+│   ├── api.py                 # FastAPI server
+│   ├── database.py            # SQLite operations
+│   ├── schemas.py             # Pydantic models
+│   ├── models/                # (Future: Custom models)
+│   └── services/
+│       ├── text_emotion.py    # Text analysis
+│       ├── audio_emotion.py   # Voice analysis
+│       ├── video_emotion.py   # Facial analysis
+│       ├── fusion.py          # Multi-modal fusion
+│       └── recommendations.py # Intervention engine
+├── frontend-react/            # React Frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Dashboard.jsx  # Main Dashboard
+│   │   │   └── TestingLabs.jsx
+│   │   ├── App.jsx            # Main App Component
+│   │   └── main.jsx           # Entry Point
+│   ├── public/
+│   ├── index.html
+│   └── vite.config.js
+├── data/
+│   └── wellbeing.db           # SQLite database
+├── docs/                      # Documentation
+│   └── DEPLOYMENT.md          # Deployment Guide
+├── notebooks/                 # Jupyter notebooks
+├── requirements.txt           # Python dependencies
+├── test_verify.py             # Integration tests
+└── README.md                  # This file
+```
 
 ---
 
@@ -122,10 +315,55 @@ streamlit run frontend/app.py
 - **⌚ Wearable Integration**: Ingest Heart Rate Variability (HRV) from Apple Watch/Fitbit.
 - **🧠 Reinforcement Learning**: An agent that learns *which* recommendations actually improve your score over time.
 - **📱 Mobile App**: A React Native companion for tracking on the go.
+- **🌐 Multi-Language Support**: Expand text analysis to support multiple languages.
+- **📊 Advanced Analytics**: Weekly/monthly reports with actionable insights.
 
 ---
 
-## 🤝 Contribution
-Open for PRs! Please verify new features with `python test_integration.py` before submitting.
+## 🤝 Contributing
 
-**License**: MIT
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+**Before submitting:**
+- Run `python test_verify.py` to ensure all tests pass
+- Update documentation if needed
+- Follow the existing code style
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **HuggingFace** for the Transformers library and pre-trained models
+- **Justin Shenk** for the FER (Facial Expression Recognition) library
+- **React & Vite** for the high-performance modern frontend
+- **FastAPI** for the high-performance backend framework
+
+---
+
+## 📞 Contact
+
+**Ishan Shirode** - [@ISHANSHIRODE01](https://github.com/ISHANSHIRODE01)
+
+Project Link: [https://github.com/ISHANSHIRODE01/Emotion-Aware-Productivity-Mental-Wellbeing-Assistant](https://github.com/ISHANSHIRODE01/Emotion-Aware-Productivity-Mental-Wellbeing-Assistant)
+
+---
+
+<div align="center">
+
+**Made with ❤️ for better mental health and productivity**
+
+⭐ Star this repo if you find it helpful!
+
+</div>

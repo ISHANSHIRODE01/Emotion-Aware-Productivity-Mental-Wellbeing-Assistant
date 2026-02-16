@@ -17,9 +17,9 @@ class AnalysisResponse(BaseModel):
     dominant_emotion: str
     recommendation: str
     fused_emotions: Dict[str, float]
-    text_analysis: Optional[Dict[str, float]] = None
-    audio_analysis: Optional[Dict[str, float]] = None
-    face_analysis: Optional[Dict[str, float]] | str = None 
+    text_analysis: Optional[Dict[str, float] | str] = None
+    audio_analysis: Optional[Dict[str, float] | str] = None
+    face_analysis: Optional[Dict[str, float] | str] = None 
     processing_time_ms: float
 
 class SessionHistoryItem(BaseModel):

@@ -5,7 +5,15 @@ import os
 import tempfile
 import cv2
 import numpy as np
+import logging
 import time
+
+# Configure Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger("uvicorn-backend")
 
 # Import services
 from backend.services.text_emotion import TextEmotionModel
@@ -19,9 +27,12 @@ from backend.schemas import AnalysisResponse
 app = FastAPI()
 
 # Allow CORS for frontend interaction
+# Allow CORS for frontend interaction
+origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,15 +47,15 @@ video_model = None
 async def startup_event():
     global text_model, audio_model, video_model
     try:
-        print("Initializing models...")
+        logger.info("Initializing AI models...")
         # Initialize models here. 
         text_model = TextEmotionModel()
         audio_model = AudioEmotionModel()
         video_model = VideoEmotionModel()
 
-        print("All models loaded successfully.")
+        logger.info("✓ All models loaded successfully.")
     except Exception as e:
-        print(f"Error loading models during startup: {e}")
+        logger.error(f"✗ Error loading models during startup: {e}")
 
 @app.get("/")
 def read_root():
@@ -79,7 +90,7 @@ async def analyze_session(
         try:
             text_probs = text_model.predict(text)
         except Exception as e:
-            print(f"Text analysis error: {e}")
+            logger.warning(f"Text analysis error: {e}")
             
     # 2. Audio Analysis
     if audio_file and audio_model:
@@ -99,7 +110,7 @@ async def analyze_session(
             # Cleanup
             os.remove(tmp_path)
         except Exception as e:
-            print(f"Audio analysis error: {e}")
+            logger.warning(f"Audio analysis error: {e}")
 
     # 3. Video/Face Analysis
     if image_file and video_model:
@@ -119,7 +130,7 @@ async def analyze_session(
                  face_probs = {} # Empty dict implies "Face not detected"
                  
         except Exception as e:
-            print(f"Video analysis error: {e}")
+            logger.warning(f"Video analysis error: {e}")
 
     # 4. Fusion
     fused_probs = fuse_emotions(text_probs, audio_probs, face_probs)

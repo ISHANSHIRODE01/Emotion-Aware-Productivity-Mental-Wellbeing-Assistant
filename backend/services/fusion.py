@@ -18,6 +18,8 @@ def normalize_emotion_dict(emotion_dict):
             normalized['happy'] = v
         elif k_lower == 'sadness':
             normalized['sad'] = v
+        elif k_lower == 'anger':
+            normalized['angry'] = v
         elif k_lower in normalized:
             normalized[k_lower] = v
     
@@ -41,9 +43,9 @@ def fuse_emotions(text_probs=None, audio_probs=None, face_probs=None, weights=No
     
     # Calculate valid total weight (handle missing modalities)
     total_weight = 0.0
-    if text_probs: total_weight += weights.get('text', 0)
-    if audio_probs: total_weight += weights.get('audio', 0)
-    if face_probs: total_weight += weights.get('face', 0)
+    if text_probs and len(text_probs) > 0: total_weight += weights.get('text', 0)
+    if audio_probs and len(audio_probs) > 0: total_weight += weights.get('audio', 0)
+    if face_probs and len(face_probs) > 0: total_weight += weights.get('face', 0)
 
     if total_weight == 0:
         return fused_probs # Return all zeros if no input

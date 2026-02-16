@@ -9,7 +9,7 @@ class VideoEmotionModel:
         """
         print("Loading VideoEmotionModel (FER)...")
         try:
-            from fer import FER
+            from fer.fer import FER
             self.detector = FER(mtcnn=mtcnn)
             print("VideoEmotionModel loaded.")
         except Exception as e:

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Prototype-blue?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Stack](https://img.shields.io/badge/Full_Stack-FastAPI%2BReact-00C7B7?style=for-the-badge&logo=react&logoColor=white)
 ![AI](https://img.shields.io/badge/AI-Transformers%20%2B%20Computer_Vision-FF4B4B?style=for-the-badge)
@@ -26,7 +26,7 @@ The **Emotion-Aware Productivity Assistant** is not just another to-do list. It 
 ## ✨ Key Features
 
 ### 1. 🤖 Multi-Modal AI Fusion
-Unlike simple sentiment analysis tools, this system combines three distinct AI streams for 95%+ emotional accuracy:
+This system combines three distinct AI streams via late (weighted) fusion. Classification accuracy has **not yet been benchmarked on a labelled dataset** — see [`EVALUATION.md`](EVALUATION.md) for what is and is not measured, and the planned benchmark protocol:
 - **Text Analysis**: Uses **DistilRoBERTa** (HuggingFace) to detect subtle nuances in your journals.
 - **Voice Intelligence**: Powered by **Wav2Vec2** Transformers to analyze vocal tonality (pitch, jitter, energy).
 - **Facial Recognition**: Uses **Deep Neural Networks (FER)** to detect micro-expressions (happy, sad, stressed) via webcam or uploaded photos.
